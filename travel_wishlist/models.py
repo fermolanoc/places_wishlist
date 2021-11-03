@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Place(models.Model):
     user = models.ForeignKey('auth.User', null=False,
-                             on_delete=models.CASCADE())
+                             on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     visited = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
