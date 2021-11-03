@@ -22,4 +22,6 @@ a.nav-link {
 
 #add-new-place {
   background-color: #ad3da4;
+  border: whitesmoke;
+  outline: none;
 }
