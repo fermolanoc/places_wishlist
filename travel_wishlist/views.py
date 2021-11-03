@@ -44,3 +44,9 @@ def place_was_visited(request, place_pk):
         place.save()
 
         return redirect('place_list')
+
+
+@login_required
+def place_details(request, place_pk):
+    place = get_object_or_404(Place, pk=place_pk)
+    return render(request, 'travel_wishlist/place_details.html', {'place': place})

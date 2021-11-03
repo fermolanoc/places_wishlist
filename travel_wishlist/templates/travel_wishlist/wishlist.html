@@ -11,7 +11,7 @@
 
 <div class="wishlist-place">
   <span id="place-name-{{ place.pk }}" class="place-name">
-    {{place.name}}
+    <a href="{% url 'place_details' place_pk=place.pk %}">{{place.name}}</a>
   </span>
   <form
     class="visited-form"
