@@ -13,4 +13,9 @@
   {% csrf_token %}
   <button id="visited-button-{{ place.pk }}" type="submit">Visited!</button>
 </form>
-{% endif %} {% endblock %}
+{% endif %}
+<form action="{% url 'delete_place' place.pk %}" method="post">
+  {% csrf_token %}
+  <button type="submit" class="delete">Delete</button>
+</form>
+{% endblock %}
