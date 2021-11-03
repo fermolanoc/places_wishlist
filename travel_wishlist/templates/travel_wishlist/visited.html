@@ -1,3 +1,4 @@
+{% extends 'travel_wishlist/base.html'%} {% block content %}
 <h1>Places you have visited</h1>
 
 {% if visited %}
@@ -9,6 +10,4 @@
 
 {% else %}
 <p>You have not visited any places yet.</p>
-{% endif %}
-
-<a href="{% url 'place_list' %}">You're wishlist</a>
+{% endif %} {% endblock %}
