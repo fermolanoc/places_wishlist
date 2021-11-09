@@ -19,7 +19,15 @@ class Place(models.Model):
             if old_place.photo != self.photo:
                 self.delete_photo(old_place.photo)
 
-    def delete_photo(self, photo):
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.photo:
+            self.delete_photo(self.photo)
+
+        super().delete(*args, **kwargs)
+
+    def delete(self, photo):
         if default_storage.exists(photo.name):
             default_storage.delete(photo.name)
 
