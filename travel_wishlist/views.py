@@ -48,7 +48,7 @@ def place_was_visited(request):
             place.visited = True
             place.save()
         else:
-            return HttpResponseForbidden()
+            return HttpResponseForbidden()\
 
     return redirect('place_list')
 
