@@ -34,15 +34,16 @@ def place_list(request):
 
 @login_required
 def places_visited(request):
-    visited = Place.objects.filter(visited=True)
+    visited = Place.objects.filter(user=request.user).filter(
+        visited=True).order_by('name')
     return render(request, 'travel_wishlist/visited.html', {'visited': visited})
 
 
 @login_required
-def place_was_visited(request):
+def place_was_visited(request, place_pk):
     if request.method == 'POST':
         pk = request.POST.get('pk')
-        place = get_object_or_404(Place, pk=pk)
+        place = get_object_or_404(Place, pk=place_pk)
         # only let a user edit their own places
         print(place.user, request.user)
         if (place.user == request.user):
@@ -64,7 +65,7 @@ def place_details(request, place_pk):
 
     if request.method == 'POST':
         form = TripReviewForm(request.POST, request.FILES, instance=place)
-        # instance is the moderl object to update with the form data
+        # instance is the model object to update with the form data
 
         if form.is_valid():
             form.save()
