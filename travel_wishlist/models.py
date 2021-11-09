@@ -27,7 +27,7 @@ class Place(models.Model):
 
         super().delete(*args, **kwargs)
 
-    def delete(self, photo):
+    def delete_photo(self, photo):
         if default_storage.exists(photo.name):
             default_storage.delete(photo.name)
 
