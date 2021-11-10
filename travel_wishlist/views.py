@@ -34,6 +34,7 @@ def place_list(request):
 
 @login_required
 def places_visited(request):
+    # Get all places that have been visited by current user, and order them by name to be shown on screen
     visited = Place.objects.filter(user=request.user).filter(
         visited=True).order_by('name')
     return render(request, 'travel_wishlist/visited.html', {'visited': visited})
@@ -42,17 +43,15 @@ def places_visited(request):
 @login_required
 def place_was_visited(request, place_pk):
     if request.method == 'POST':
-        pk = request.POST.get('pk')
         place = get_object_or_404(Place, pk=place_pk)
         # only let a user edit their own places
-        print(place.user, request.user)
         if (place.user == request.user):
             place.visited = True
             place.save()
         else:
             return HttpResponseForbidden()\
 
-    return redirect('place_list')
+    return redirect('place_list')  # take back to homepage
 
 
 @login_required
@@ -87,8 +86,10 @@ def place_details(request, place_pk):
 @login_required
 def delete_place(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)
+    # let a user deletes own places
     if place.user == request.user:
         place.delete()
+        # return to homepage after deleting a Place
         return redirect('place_list')
     else:
         return HttpResponseForbidden()

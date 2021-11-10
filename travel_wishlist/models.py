@@ -15,6 +15,7 @@ class Place(models.Model):
     def save(self, *args, **kwargs):
         # Get reference of previous version of this place
         old_place = Place.objects.filter(pk=self.pk).first()
+        # Deletes current photo, if any, from Place when updating it
         if old_place and old_place.photo:
             if old_place.photo != self.photo:
                 self.delete_photo(old_place.photo)
@@ -22,12 +23,14 @@ class Place(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        # Check if there current Place has a photo and deletes it when deleting a Place
         if self.photo:
             self.delete_photo(self.photo)
 
         super().delete(*args, **kwargs)
 
     def delete_photo(self, photo):
+        # If there is a photo on local storage for current Place, deletes it when deleting a Place
         if default_storage.exists(photo.name):
             default_storage.delete(photo.name)
 

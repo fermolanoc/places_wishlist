@@ -41,6 +41,7 @@
 
 <p>You have not visited {{ place.name }} yet.</p>
 
+<!-- Button to mark a place as visited -->
 <form action="{% url 'place_was_visited' place.pk %}" method="POST">
   {% csrf_token %}
   <button type="submit" class="visited">Visited!</button>
@@ -48,6 +49,7 @@
 
 {% endif %}
 
+<!-- Button to delete a place -->
 <form action="{% url 'delete_place' place.pk %}" method="POST">
   {% csrf_token %}
   <button type="submit" class="delete">Delete</button>
