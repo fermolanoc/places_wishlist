@@ -79,11 +79,19 @@ WSGI_APPLICATION = 'wishlist.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'places',
+        'USER': 'fermolanoc',
+        'PASSWORD': os.getenv('GCP_DB_PW'),
+        'HOST': '/cloudsql/travel-wishlist-332114:us-central1:wishlist-db',
+        'PORT': '5432'
     }
 }
 
+
+# When locally, run on this port
+if not os.getenv('GAE_INSTANCE'):
+    DATABASES['default']['HOST'] = '120.0.0.1'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
