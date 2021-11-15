@@ -132,10 +132,11 @@ USE_TZ = True
 # Specify a location to copy static files to when running python manage.py collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
 
-STATIC_URL = '/static/'
-
 # Media URL, for user-created media - becomes part of URL when images are displayed
 MEDIA_URL = '/media/'
 
 # Where in the file system to user_uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GS_STATIC_FILE_BUCKET = 'travel-wishlist-332114.appspot.com'
+STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
