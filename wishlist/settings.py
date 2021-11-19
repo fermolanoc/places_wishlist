@@ -27,7 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '!tagx-paxxqx7_qk4baylzjncq(k@#b%x04vy7i7k-^m)_bn4d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.getenv('GAE_INSTANCE'):
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -92,7 +96,12 @@ DATABASES = {
 
 # When locally, run on this port
 if not os.getenv('GAE_INSTANCE'):
-    DATABASES['default']['HOST'] = '127.0.0.1'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -133,19 +142,22 @@ USE_TZ = True
 # Specify a location to copy static files to when running python manage.py collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
 
-# Media URL, for user-created media - becomes part of URL when images are displayed
-# MEDIA_URL = '/media/'
 
 # Where in the file system to user_uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-GS_STATIC_FILE_BUCKET = 'travel-wishlist-332114.appspot.com'
-STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+if os.getenv('GAE_INSTANCE'):
+    GS_STATIC_FILE_BUCKET = 'travel-wishlist-332114.appspot.com'
+    STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
 
-GS_BUCKET_NAME = 'wishlist-places-images'
-MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
+    GS_BUCKET_NAME = 'wishlist-places-images'
+    MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    'travel-credentials.json')
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+        'travel-credentials.json')
+else:
+    # Media URL, for user-created media - becomes part of URL when images are displayed
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
