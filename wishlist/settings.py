@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from google.oauth2 import service_account
 import os
 from pathlib import Path
 import mimetypes
@@ -133,10 +134,18 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
 
 # Media URL, for user-created media - becomes part of URL when images are displayed
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
 # Where in the file system to user_uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 GS_STATIC_FILE_BUCKET = 'travel-wishlist-332114.appspot.com'
 STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+
+GS_BUCKET_NAME = 'wishlist-places-images'
+MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    'travel-credentials.json')

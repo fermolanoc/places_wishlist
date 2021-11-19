@@ -6,3 +6,5 @@ env
 .idea
 .vscode
 app.yaml
+cloud_sql_proxy
+travel-credentials.json
